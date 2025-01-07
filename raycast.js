@@ -10,7 +10,7 @@ const FOV_ANGLE = 60 * (Math.PI / 180);
 const WALL_STRIP_WIDTH = 3;
 const NUM_RAYS = WINDOW_WIDTH / WALL_STRIP_WIDTH;
 
-const MINIMAP_SCALE_FACTOR = 1;
+const MINIMAP_SCALE_FACTOR = 0.3;
 
 class Map {
     constructor() {
@@ -107,7 +107,7 @@ class Player {
 
 class Ray {
     constructor(rayAngle) {
-        this.rayAngle = normalizeAngle(rayAngle);
+        this.rayAngle = normalize_angle(rayAngle);
         this.wallHitX = 0;
         this.wallHitY = 0;
         this.distance = 0;
@@ -214,10 +214,10 @@ class Ray {
 
         // Calculate both horizontal and vertical distances and choose the smallest value
         var horzHitDistance = (foundHorzWallHit)
-            ? distanceBetweenPoints(player.x, player.y, horzWallHitX, horzWallHitY)
+            ? distance_between_points(player.x, player.y, horzWallHitX, horzWallHitY)
             : Number.MAX_VALUE;
         var vertHitDistance = (foundVertWallHit)
-            ? distanceBetweenPoints(player.x, player.y, vertWallHitX, vertWallHitY)
+            ? distance_between_points(player.x, player.y, vertWallHitX, vertWallHitY)
             : Number.MAX_VALUE;
 
         // only store the smallest distance
@@ -250,7 +250,7 @@ var grid = new Map();
 var player = new Player();
 var rays = [];
 
-function normalizeAngle(angle) {
+function normalize_angle(angle) {
     angle = angle % (2 * Math.PI);
     if (angle < 0) {
         angle = (2 * Math.PI) + angle;
@@ -282,7 +282,7 @@ function keyReleased() {
     }
 }
 
-function castAllRays() {
+function cast_all_rays() {
     // start first ray subtracting half of the FOV
     var rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
 
@@ -297,21 +297,21 @@ function castAllRays() {
         rayAngle += FOV_ANGLE / NUM_RAYS;
     }
 }
-function renderCeiling() {
+function render_ceiling() {
     noStroke();
     fill('#414141');
     rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT/2);
 }
 
-function renderFloor() {
+function render_floor() {
     noStroke();
     fill('#818181');
     rect(0, WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT)
 }
 
-function render3DProjectedWalls() {
-    renderCeiling();
-    renderFloor();
+function render_3D_projected_walls() {
+    render_ceiling();
+    render_floor();
     
     // loop every ray in the array of rays
     for (var i = 0; i < NUM_RAYS; i++) {
@@ -348,7 +348,7 @@ function render3DProjectedWalls() {
     }
 }
 
-function normalizeAngle(angle) {
+function normalize_angle(angle) {
     angle = angle % (2 * Math.PI);
     if (angle < 0) {
         angle = (2 * Math.PI) + angle;
@@ -356,7 +356,7 @@ function normalizeAngle(angle) {
     return angle;
 }
 
-function distanceBetweenPoints(x1, y1, x2, y2) {
+function distance_between_points(x1, y1, x2, y2) {
     return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
@@ -366,14 +366,14 @@ function setup() {
 
 function update() {
     player.update();
-    castAllRays();
+    cast_all_rays();
 }
 
 function draw() {
     background("#111");
     update();
 
-    render3DProjectedWalls();
+    render_3D_projected_walls();
 
     grid.render();
     for (ray of rays) {
