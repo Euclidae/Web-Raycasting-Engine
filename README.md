@@ -40,8 +40,7 @@ This web implementation uses **p5.js** for graphics rendering and canvas manipul
 
 ## Implementation Notes
 
-This web implementation is based on concepts from **[Raycaster-RS](https://github.com/Euclidae/raycaster-rs)**, a Rust-based desktop raycasting engine that I implemented independently. The core algorithms and mathematical foundations remain consistent between both implementations, with this version adapted specifically for web browsers using p5.js for graphics handling.
-
+This web implementation is the base for concepts n **[Raycaster-RS](https://github.com/Euclidae/raycaster-rs)**, a Rust-based desktop raycasting engine that I implemented independently.
 The Rust version serves as a desktop application, while this JavaScript implementation brings the same raycasting technology to the web with an accessible, browser-based interface.
 
 ## 🛠Installation & Setup
